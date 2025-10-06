@@ -10,8 +10,11 @@
 
 Clase 1
 
-- [Curso Docker & Kubernetes de IQUATRO](https://iquattrogroup.com/)
-- [Curso Docker & Kubernetes de IQUATRO](https://iquattrogroup.com/)
+- [Introducción a Containers (Contenedores) y Docker](https://iquattrogroup.com/course/view.php?id=114#section-2)
+
+Clase 2
+
+- [Dockerfiles y Construcción de Imágenes](https://iquattrogroup.com/course/view.php?id=114#section-3)
 
 
 
