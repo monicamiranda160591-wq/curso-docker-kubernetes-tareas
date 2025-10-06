@@ -1,20 +1,21 @@
-# Tareas - Curso Docker & Kubernetes
+# Tarea 1 - Configuración de Repositorio y Primer Desafío
 
-##  Monica Miranda Ari
+### Documentación Requerida
 
-## Enlace del curso 
+1. **Nombre de la aplicación** - Indica cuál elegiste (httpd, redis o mysql)
 
-- [Curso Docker & Kubernetes de IQUATRO](https://iquattrogroup.com/)
+2. **Comandos ejecutados** - Todos los comandos que usaste, uno por uno:
+   - Comando `docker run` completo
+   - Comandos de verificación
+   - Comandos de limpieza
 
-## Indice de las Clases
+3. **Explicación breve** - Qué hace cada flag del comando `docker run` que usaste
 
-Clase 1
+4. **Evidencia:**
+   - Screenshot de `docker ps` mostrando el container corriendo
+   - Screenshot del navegador (si es httpd) o salida de `docker logs` (si es redis/mysql)
+   - Screenshot o salida mostrando que el container fue eliminado correctamente
 
-- [Introducción a Containers (Contenedores) y Docker](https://iquattrogroup.com/course/view.php?id=114#section-2)
-
-Clase 2
-
-- [Dockerfiles y Construcción de Imágenes](https://iquattrogroup.com/course/view.php?id=114#section-3)
-
-
-
+5. **Conclusiones (opcional):**
+   - Qué aprendiste
+   - Dificultades encontradas y cómo las resolviste
