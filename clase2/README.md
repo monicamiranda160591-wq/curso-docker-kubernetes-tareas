@@ -13,22 +13,61 @@
 
 ## Dockerfile
 
-\`\`\`dockerfile
+# -----------------------
 # Stage 1: Build
-FROM node:18-alpine AS build
-...
+# -----------------------
+FROM node:20-alpine AS build
 
-# Stage 2: Production
-FROM node:18-alpine
-...
-\`\`\`
+LABEL stage="build"
+
+# Establecer directorio de trabajo
+WORKDIR /app
+
+# Copiar archivos de dependencia
+COPY package*.json ./
+
+# Instalar todas las dependencias
+RUN npm install
+
+# Copiar el codigo de la app
+COPY . .
+
+# -----------------------
+# Stage 2: Production / Runtime
+# -----------------------
+FROM node:20-alpine AS production
+
+# Establecer directorio de trabajo
+LABEL stage="production"
+
+# Crear directorio de trabajo
+WORKDIR /app
+
+# Copiar solo dependencias de producción del stage build
+COPY --from=build /app/node_modules ./node_modules
+COPY --from=build /app . 
+
+# Crear usuario non-root
+RUN addgroup -S appgroup && adduser -S appuser -G appgroup
+USER appuser
+
+# Exponer puerto configurable
+ENV PORT=3000
+EXPOSE $PORT
+
+# HEALTHCHECK 
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+CMD curl -f http://localhost:$PORT/ || exit 1
+
+# Comando por defecto
+CMD ["node", "index.js"]
 
 **Explicación:**
 
 | Stage | Propósito |
 |-------|-----------|
-| Build | Instalar todas las dependencias... |
-| Production | Solo runtime... |
+| Build | instala dependencias y copia todo |
+| Production | solo copia lo necesario |
 
 ## Build
 
@@ -42,7 +81,7 @@ docker build -t tasks-api:1.0 .
 Successfully tagged tasks-api:1.0
 \`\`\`
 
-**Tamaño final:** 145MB
+**Tamaño final:** 197MB
 
 ## Testing
 
