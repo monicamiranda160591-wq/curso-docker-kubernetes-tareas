@@ -12,7 +12,7 @@
 - POST /api/tasks - Crear tarea
 
 ## Dockerfile
-
+```bash
 # -----------------------
 # Stage 1: Build
 # -----------------------
@@ -61,7 +61,7 @@ CMD curl -f http://localhost:$PORT/ || exit 1
 
 # Comando por defecto
 CMD ["node", "index.js"]
-
+```
 **Explicación:**
 
 | Stage | Propósito |
