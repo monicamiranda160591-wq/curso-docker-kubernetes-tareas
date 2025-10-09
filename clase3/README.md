@@ -77,10 +77,12 @@ con Nginx, una base de datos PostgreSQL con volumen persistente y Adminer para g
 ## Screenshots
 
 ### Servicios corriendo
-
+<img width="1340" height="114" alt="image" src="https://github.com/user-attachments/assets/c3071649-ed92-499b-8ec7-165d0e874d95" />
 
 ### API funcionando
-![API](screenshots/api.png)
+<img width="571" height="264" alt="image" src="https://github.com/user-attachments/assets/9853c9aa-80f9-4b5c-bc7b-89357ea96ea4" />
+<img width="780" height="417" alt="image" src="https://github.com/user-attachments/assets/8c8dd34e-bbe4-4e8a-8e6b-3dfe16593c05" />
+
 ```
 
 ### 6. Conceptos Aplicados
