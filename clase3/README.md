@@ -1,12 +1,14 @@
 ### 1. Encabezado
 
 ```markdown
-# Nombre de tu Aplicación
+# Aplicación Multi-Contenedor
+# Servicios: Nginx + PostgreSQL + Adminer
 
 **Curso:** Docker & Kubernetes - Clase 3
-**Estudiante:** Tu Nombre
+**Estudiante:** Monica Miranda Ari
 
-Breve descripción (1-2 líneas) de qué hace.
+Esta aplicación muestra el uso de Docker Compose para orquestar múltiples contenedores conectados en una red personalizada, 
+con Nginx, una base de datos PostgreSQL con volumen persistente y Adminer para gestión visual de la bd.
 ```
 
 ### 2. Stack Tecnológico
@@ -14,8 +16,11 @@ Breve descripción (1-2 líneas) de qué hace.
 ```markdown
 ## Stack
 
-- **App:** Node.js / Python / Go
-- **Base de datos:** MongoDB / PostgreSQL / MySQL
+- **App:** Nginx con Htlm estatico
+- **Base de datos:**  PostgreSQL 
+- **GUI de Base de Datos:** Adminer 
+- **Red personalizada:** app-network  
+- **Volumen persistente:** db-data 
 ```
 
 ### 3. Cómo Ejecutar
@@ -25,8 +30,8 @@ Breve descripción (1-2 líneas) de qué hace.
 
 1. Clonar:
    ```bash
-   git clone https://github.com/tu-usuario/tu-repo.git
-   cd tu-repo
+   git clone https://github.com/monicamiranda160591-wq/curso-docker-kubernetes-tareas.git
+   cd clase3
    ```
 
 2. Levantar servicios:
@@ -35,7 +40,8 @@ Breve descripción (1-2 líneas) de qué hace.
    ```
 
 3. Acceder:
-   - API: http://localhost:3000
+   - Sitio Web Nginx: http://localhost:8080
+   - GUI BD: http://localhost:8081
 ```
 
 ### 4. Cómo Probar
@@ -46,15 +52,22 @@ Breve descripción (1-2 líneas) de qué hace.
 1. Servicios corriendo:
    ```bash
    docker compose ps
+   
+   Los 3 servicios debe estar en estado Uo o healthy
+	clase3_nginx
+	clase3_postgres
+	clase3_adminer
    ```
-
-2. Acceder a la web: http://localhost:XXXX
+2. Acceder a la web: http://localhost:8080 y a la BD http://localhost:8081
 
 3. Verificar volumen persiste:
    ```bash
-   docker compose down
-   docker compose up -d
-   docker volume ls  # debe seguir existiendo
+   docker compose down  # detiene los contenedores, pero maniente los volumenes.
+   
+   docker compose up -d  # levanta los servidores 
+   
+   docker volume ls     # debe seguir existiendo
+   
    ```
 ```
 
@@ -64,7 +77,7 @@ Breve descripción (1-2 líneas) de qué hace.
 ## Screenshots
 
 ### Servicios corriendo
-![compose ps](screenshots/services.png)
+
 
 ### API funcionando
 ![API](screenshots/api.png)
@@ -75,24 +88,8 @@ Breve descripción (1-2 líneas) de qué hace.
 ```markdown
 ## Conceptos Docker
 
-- Docker Compose con 2 servicios
-- Red custom: `app-network`
-- Volumen: `db-data` (persistencia)
-- Variables de entorno
+- Docker Compose: permite orquestar multiples servicios
+- Red custom: `app-network` Permite la comunicación entre contenedores
+- Volumen: `db-data` (persistencia) Almacena datos de manera permanente
+- Variables de entorno: Para definir usuario contraseña y bd 
 ```
-
----
-
-## Parte 5: Capturas de Pantalla
-
-Mínimo **3 capturas**:
-
-1. **Servicios corriendo**: `docker compose ps` mostrando ambos servicios
-2. **Aplicación web funcionando**: Navegador mostrando http://localhost:XXXX
-3. **Volumen persistente**: `docker volume ls` mostrando el volumen creado
-
-**Opcional (para destacar)**:
-- `docker network ls` mostrando la red custom
-- `docker exec` haciendo ping entre servicios
-
----
