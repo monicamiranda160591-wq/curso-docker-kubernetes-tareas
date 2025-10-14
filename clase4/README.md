@@ -1,8 +1,10 @@
-### 1. Encabezado
+### 1. Título y Descripción
 
 ```markdown
-# Aplicación Multi-Contenedor
-# Servicios: Nginx + PostgreSQL + Adminer
+# Aplicación mi-microservicios - Blog
+# Descripción: Tarea de microservicios que implementa un sistema de blog con múltiples servicios backend, Redis como cache y Nginx como API Gateway. 
+               Permite crear, listar y consultar posts con persistencia en MongoDB.
+# Tecnologías utilizadas: Docker Compose, Node.js (Express), Redis, MongoDB, Nginx, HTML/JavaScript.
 
 **Curso:** Docker & Kubernetes - Clase 3
 **Estudiante:** Monica Miranda Ari
@@ -11,85 +13,79 @@ Esta aplicación muestra el uso de Docker Compose para orquestar múltiples cont
 con Nginx, una base de datos PostgreSQL con volumen persistente y Adminer para gestión visual de la bd.
 ```
 
-### 2. Stack Tecnológico
+### 2. Arquitectura (ASCII)
 
 ```markdown
-## Stack
-
-- **App:** Nginx con Htlm estatico
-- **Base de datos:**  PostgreSQL 
-- **GUI de Base de Datos:** Adminer 
-- **Red personalizada:** app-network  
-- **Volumen persistente:** db-data 
+Cliente (navegador)
+|
+v
+Gateway Nginx (puerto 8080)
+/ \
+/ \
+Frontend Backend (service1)
+|
+v
+MongoDB
+^
+|
+Redis (cache)
+Red Docker: app-network
 ```
 
-### 3. Cómo Ejecutar
+### 3. Servicios
+---
+
+## 3. Servicios
+| Servicio | Tecnología | Puerto | Descripción |
+|---|---|---|---|
+| gateway | Nginx | 8080 | API Gateway y enrutamiento |
+| backend | Node.js | 5000 | API principal para posts |
+| redis | Redis | 6379 | Cache de posts |
+| db | MongoDB | 27017 | Persistencia de posts |
+| frontend | Nginx | 80 | Interfaz web |
+
+---
+### 4. Instrucciones de Uso
+```bash
+# Clonar repositorio
+git clone https://github.com/monicamiranda160591-wq/curso-docker-kubernetes-tareas.git
+cd clase4
+cd mi-microservicios
+
+# Levantar servicios
+docker compose up -d --build
+
+# Verificar estado
+docker compose ps
+
+# Ver logs
+docker compose logs -f service1
+
+# Acceder a la aplicación
+http://localhost:8080
+http://localhost:8080/gateway/health
+
+
+
+### 5. Endpoints de la API
 
 ```markdown
-## Ejecución
 
-1. Clonar:
-   ```bash
-   git clone https://github.com/monicamiranda160591-wq/curso-docker-kubernetes-tareas.git
-   cd clase3
-   ```
+GET /api/posts
+Descripción: Lista todos los posts
+Response: { "source": "cache|database", "data": [{"_id":"...","title":"...","content":"..."}] }
 
-2. Levantar servicios:
-   ```bash
-   docker compose up -d
-   ```
+POST /api/posts
+Descripción: Crear un post (invalida cache de posts)
+Request Body: { "title": "prueba1", "content": "contenido1" }
 
-3. Acceder:
-   - Sitio Web Nginx: http://localhost:8080
-   - GUI BD: http://localhost:8081
+DELETE /api/posts/:id
+Descripción: Elimina un post específico (invalida cache)
+Response:{ "message": "deleted" }
+
 ```
 
-### 4. Cómo Probar
-
-```markdown
-## Verificación
-
-1. Servicios corriendo:
-   ```bash
-   docker compose ps
-   
-   Los 3 servicios debe estar en estado Uo o healthy
-	clase3_nginx
-	clase3_postgres
-	clase3_adminer
-   ```
-2. Acceder a la web: http://localhost:8080 y a la BD http://localhost:8081
-
-3. Verificar volumen persiste:
-   ```bash
-   docker compose down  # detiene los contenedores, pero maniente los volumenes.
-   
-   docker compose up -d  # levanta los servidores 
-   
-   docker volume ls     # debe seguir existiendo
-   
-   ```
-```
-
-### 5. Capturas de Pantalla
-
-```markdown
-## Screenshots
-
-### Servicios corriendo
+### 6. Capturas de Pantalla
 
 
-### API funcionando
-![API](screenshots/api.png)
-```
 
-### 6. Conceptos Aplicados
-
-```markdown
-## Conceptos Docker
-
-- Docker Compose: permite orquestar multiples servicios
-- Red custom: `app-network` Permite la comunicación entre contenedores
-- Volumen: `db-data` (persistencia) Almacena datos de manera permanente
-- Variables de entorno: Para definir usuario contraseña y bd 
-```
