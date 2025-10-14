@@ -1,0 +1,36 @@
+version: "3.8"
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: mi-app:optimizado
+    container_name: miapp_backend
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - MONGO_URI=mongodb://mongo:27017/miapp
+    depends_on:
+      - mongo
+    healthcheck:
+      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:3000/health || exit 1"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+    # Opcional: montar volúmenes en modo read-only cuando sea posible
+    # read_only: true
+
+  mongo:
+    image: mongo:6.0
+    container_name: miapp_mongo
+    restart: unless-stopped
+    volumes:
+      - mongo-data:/data/db
+    environment:
+      MONGO_INITDB_DATABASE: miapp
+
+volumes:
+  mongo-data:
