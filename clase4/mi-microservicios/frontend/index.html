@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Blog - Microservicios</title>
+<style>
+body { font-family: Arial, sans-serif; max-width: 800px; margin: 2rem auto; padding: 0 1rem; }
+.post { border: 1px solid #ddd; padding: 1rem; margin-bottom: 1rem; }
+form { margin-bottom: 2rem; }
+label { display:block; margin-top: 0.5rem; }
+</style>
+</head>
+<body>
+<h1>Blog - Microservicios (Option A)</h1>
+<section>
+<h2>Crear post</h2>
+<form id="createForm">
+<label>Título <input id="title" required /></label>
+<label>Contenido <textarea id="content" required></textarea></label>
+<button type="submit">Crear</button>
+</form>
+</section>
+
+
+<section>
+<h2>Posts</h2>
+<div id="posts"></div>
+</section>
+
+
+<script>
+const API_ROOT = '/api'; // through gateway
+
+
+async function fetchPosts() {
+const res = await fetch(API_ROOT + '/posts');
+const json = await res.json();
+document.getElementById('posts').innerHTML = '<p>Source: ' + json.source + '</p>' + (json.data.map ? json.data.map(p => `\n<div class="post"><h3>${p.title}</h3><p>${p.content}</p></div>`).join('') : JSON.stringify(json.data));
+}
+
+
+document.getElementById('createForm').addEventListener('submit', async (e) => {
+e.preventDefault();
+const title = document.getElementById('title').value;
+const content = document.getElementById('content').value;
+await fetch(API_ROOT + '/posts', {
+method: 'POST',
+headers: { 'Content-Type': 'application/json' },
+body: JSON.stringify({ title, content })
+});
+document.getElementById('title').value = '';
+document.getElementById('content').value = '';
+await fetchPosts();
+});
+
+
+// Initial load
+fetchPosts();
+
+
+// Poll to show behavior
+setInterval(fetchPosts, 15000);
+</script>
+</body>
+</html>
