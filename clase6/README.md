@@ -1,12 +1,12 @@
 ### 1. Encabezado
 
 ```markdown
-# Nombre de tu Aplicación
+# Tarea 6 - Deployment y Service en Kubernetes
 
 **Curso:** Docker & Kubernetes - Clase 6
-**Estudiante:** Tu Nombre
+**Estudiante:** Monica Miranda Ari
 
-Breve descripción (1-2 líneas) de qué hace.
+Despliegue de una aplicación web Nginx en un clúster de Kubernetes, utilizando un Deployment con múltiples réplicas y un Service tipo NodePort para exponerla al exterior.
 ```
 
 ### 2. Tecnología
@@ -14,7 +14,7 @@ Breve descripción (1-2 líneas) de qué hace.
 ```markdown
 ## Stack
 
-- **Aplicación:** Nginx / Node.js / Python / etc.
+- **Aplicación:** Nginx (nginx:alpine)
 - **Kubernetes:** minikube
 - **Réplicas:** 3
 ```
@@ -26,8 +26,8 @@ Breve descripción (1-2 líneas) de qué hace.
 
 1. Clonar:
    ```bash
-   git clone https://github.com/tu-usuario/tu-repo.git
-   cd tu-repo
+   git clone https://github.com/monicamiranda160591-wq/curso-docker-kubernetes-tareas.git
+   cd clase6
    ```
 
 2. Desplegar:
@@ -51,40 +51,41 @@ Breve descripción (1-2 líneas) de qué hace.
    kubectl get all
    ```
 
-2. Acceder a la web: http://<IP>:30200
+2. Acceder a la web: http://192.168.49.2:30200/
 
 3. Escalar:
    ```bash
    kubectl scale deployment webapp-deployment --replicas=5
    kubectl get pods
    ```
-```
+
 
 ### 5. Capturas de Pantalla
 
-```markdown
+
 ## Screenshots
 
 ### Recursos desplegados
-![kubectl get all](screenshots/resources.png)
+<img width="727" height="258" alt="image" src="https://github.com/user-attachments/assets/37e772d2-b6bc-4e44-a61a-7b2efdad2c01" />
 
 ### Aplicación funcionando
-![webapp](screenshots/webapp.png)
+<img width="812" height="185" alt="image" src="https://github.com/user-attachments/assets/f7c9f74b-2072-47be-834f-455f87cbd9ac" />
 
 ### Escalado a 5 réplicas
-![scaling](screenshots/scaling.png)
-```
+<img width="652" height="150" alt="image" src="https://github.com/user-attachments/assets/7043e8dd-0e1b-46bf-8e00-2fffeb1e02e3" />
+
+
 
 ### 6. Conceptos Aplicados
 
 ```markdown
 ## Conceptos Kubernetes
 
-- Deployment con 3 réplicas
-- Service tipo NodePort
-- Labels y selectors
-- Auto-healing
-- Escalado horizontal
+- **Deployment con 3 réplicas:** asegura la alta disponibilidad de la aplicación ejecutando múltiples pods idénticos.  
+- **Service tipo NodePort:** expone la aplicación fuera del clúster a través de un puerto del nodo (30200).  
+- **Labels y selectors:** permiten vincular los pods con el servicio de forma dinámica y organizada.  
+- **Auto-healing:** Kubernetes reemplaza automáticamente los pods eliminados o fallidos para mantener el número deseado de réplicas.  
+- **Escalado horizontal:** posibilidad de aumentar o reducir el número de réplicas con el comando `kubectl scale`.
 ```
 
 ---
