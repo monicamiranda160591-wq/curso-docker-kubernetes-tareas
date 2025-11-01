@@ -1,70 +1,116 @@
-# Tarea 1 - Configuración de Repositorio y Primer Desafío
+# Proyecto Final - Docker & Kubernetes
 
-### Documentación Requerida
+**Alumno:** Monica Miranda Ari  
+**Fecha:** 31 de Octubre de 2025  
+**Curso:** Docker & Kubernetes - i-Quattro
 
-### 1. Nombre de la Aplicación : httpd
+## Links de Docker Hub
+- **Backend v2.1:** [https://hub.docker.com/r/monimiranda1605/springboot-api/tags](https://hub.docker.com/r/monimiranda1605/springboot-api/tags)
+- **Frontend v2.2:** [https://hub.docker.com/r/monimiranda1605/angular-frontend/tags](https://hub.docker.com/r/monimiranda1605/angular-frontend/tags)
 
-### 2. **Comandos ejecutados** - Todos los comandos que usaste, uno por uno:
-    
-**Comando docker run**
+---
 
-```bash
-docker run httpd                                                
-docker run -d --name mi-apache -p 8081:80 httpd             
+## Parte 1: Setup del Ambiente
+
+**Ambiente utilizado:**
+- VirtualBox / VMware
+- Nombre de VM/Instancia: **monica-miranda-k8s**
+- Sistema operativo: **Ubuntu 24.04 LTS**
+- Recursos: **8GB RAM, 2 CPU cores**
+- Red configurada: **NAT / Bridged**
+- Rango MetalLB: **10.0.2.100 - 10.0.2.110**
+
+### Screenshots
+
+**microk8s status**  
+<img width="996" height="704" alt="1 microk8s_status" src="https://github.com/user-attachments/assets/da6f8955-b0e8-40cb-814b-f1e521cbd878" />
+
+**Pods corriendo**  
+<img width="1031" height="726" alt="2 podsRunning" src="https://github.com/user-attachments/assets/1386a718-1987-4354-ba01-2a6007340cc0" />
+
+**Frontend con IP externa**  
+<img width="1150" height="803" alt="3 frontend_ip_externa" src="https://github.com/user-attachments/assets/f73de76c-a007-4dcc-a9f5-cae647999f89" />
+
+---
+
+## Parte 2: Backend v2.1
+
+- Editar el archivo: `src/main/java/dev/alefiengo/api/controller/GreetingController.java`
+- Agregar el método **info** con otro cuerpo modificando el nombre.
+- Construir la imagen con mi usuario.
+- Subir a Docker Hub con versión **2.1**.
+
+### Código Agregado
+
+```java
+@GetMapping("/api/info")
+public ResponseEntity<Map<String, Object>> getInfo() {
+    Map<String, Object> info = new HashMap<>();
+    info.put("alumno", "MONICA MIRANDA ARI");
+    info.put("version", "v2.1");
+    info.put("curso", "Docker & Kubernetes - i-Quattro");
+    info.put("timestamp", LocalDateTime.now().toString());
+    info.put("hostname", System.getenv("HOSTNAME"));
+    return ResponseEntity.ok(info);
+}
 ```
-**Comandos de verificación**
 
-```bash
-docker images                                                   
-docker ps -a                                                   
-docker stop 938df5d1e12d                                        
-docker start 938df5d1e12d                                      
-```
-**Comandos de limpieza**
+### Screenshots
 
-```bash
-docker rm fd761b853894                                           
-docker rmi 3bd839804f42                          
-```
+<img width="1111" height="70" alt="1 docker_images_v2 1" src="https://github.com/user-attachments/assets/663b3b91-78ae-4d27-9f79-be80f97e3e98" />  
+<img width="1390" height="304" alt="2 rollout_status" src="https://github.com/user-attachments/assets/e3c1c784-a233-4284-91a1-fe10fdde9265" />  
+<img width="659" height="227" alt="4 respuesta_json_nuevo_servicio" src="https://github.com/user-attachments/assets/f233c246-088a-4073-bdea-3bc7d26b9549" />
 
-### 3. **Explicación breve** - Qué hace cada flag del comando `docker run` utilizado
-```bash
-docker run httpd                                                # Para descargar la imagen, crea, inicia con un nombre aleatorio
-docker run -d --name mi-apache -p 8081:80 httpd                 # -d ejecuta en segundo plano
-                                                                # --name renombra el contenedor en este caso a mi-apache
-                                                                # -p asigna el puerto 8081 al 80 que tenia el contenedor
-```
-**Comandos de verificación**
+---
 
-```bash
-docker images                                                   # Lista las imagenes instaladas
-docker ps -a                                                    # Lista todos los contenedores
-docker stop 938df5d1e12d                                        # Detiene el contedor en ejecución
-docker start 938df5d1e12d                                       # Inicia el contenedor detenido
-```
-**Comandos de limpieza**
+## Parte 3: Frontend v2.2
 
-```bash
-docker rm fd761b853894                                           # Elimina el contendor
-docker rmi 3bd839804f42                                          # Elimina la imagen
-```
-### 4. **Evidencia:**
-**Screenshot de `docker ps` mostrando el container corriendo**
+- Editar los archivos: `frontend/src/app/app.component.html` y `frontend/src/app/app.component.ts`
+- Agregar el código HTML y llamar al servicio **info**.
+- Construir la imagen con mi usuario.
+- Subir a Docker Hub con versión **2.2**.
 
-   <img width="1206" height="227" alt="image" src="https://github.com/user-attachments/assets/7d462436-2252-496e-89ad-7a65d480c649" />
-     
-**Screenshot del navegador**
-     
-   <img width="538" height="270" alt="image" src="https://github.com/user-attachments/assets/8770dd82-77a7-47a9-9d95-0935d0b300d7" />
-     
-**Screenshot o salida mostrando que el container fue eliminado correctamente**
-   
-   <img width="1211" height="229" alt="image" src="https://github.com/user-attachments/assets/9e221d52-d062-4578-9b9a-d32653908826" />
+### Screenshots
 
-### 5. **Conclusiones:**
-**Qué aprendiste**
-   - Aprendi a instalar una imagen y crear un contenedor, renombrarlo y publicarlo en un puerto
-   
-**Dificultades encontradas y cómo las resolviste**
-   - No pude eliminar un contenedor, lo resolvi averiguando un poco y en base a eso lo detuve y recien lo elimine.
-   - No sabia si era git pull o git run, luego entendi la diferencia y utilice git run para la tarea
+<img width="989" height="724" alt="get_pods-w" src="https://github.com/user-attachments/assets/6b837cfd-b2a0-4748-a1c7-b3bdf4d9ae32" />  
+<img width="1442" height="1013" alt="sistema_cargado" src="https://github.com/user-attachments/assets/04b2dad7-fca7-46ac-b662-6bd10e471c3e" />  
+<img width="1023" height="935" alt="ver_Info_del_sistema" src="https://github.com/user-attachments/assets/4be5bd5a-82df-4d69-88a6-bf617842b168" />
+
+---
+
+## Parte 4: Gestión de Versiones
+
+**Comando:**  
+`kubectl rollout undo` → Permite revertir un despliegue a una versión anterior.
+
+### Screenshots
+
+<img width="1033" height="63" alt="rollback" src="https://github.com/user-attachments/assets/09b8c892-713e-42e9-8f58-2a0eb1443b09" />  
+<img width="1023" height="66" alt="rollforward" src="https://github.com/user-attachments/assets/af9b5038-dd23-4c2d-8209-15ea17ef34b7" />
+
+---
+
+## Parte 5: Ingress + MetalLB
+
+**IP del Ingress:** 10.0.2.100
+
+### Screenshots
+
+<img width="1022" height="396" alt="kubectl_describe_ingress" src="https://github.com/user-attachments/assets/bea1af88-8575-4ebe-b368-47ee98014503" />  
+<img width="1054" height="881" alt="navegador" src="https://github.com/user-attachments/assets/6de6778b-19d2-4021-abb3-05db6bc3d560" />
+
+---
+
+## Conclusiones
+
+### Aprendizajes principales
+- Comprendí cómo desplegar aplicaciones en Kubernetes usando Deployments, Services e Ingress.
+- Aprendí a usar `kubectl` para administrar pods, verificar estados y realizar rollouts.
+- Entendí el flujo de construcción y despliegue de imágenes Docker desde código fuente hasta Kubernetes.
+
+### Dificultades encontradas
+- Tuve que reiniciar el proyecto porque no lograba actualizar los cambios.
+- Al principio tuve problemas para conectarme a Git y subir mi proyecto; finalmente lo logré con los cambios y versiones solicitadas.
+
+### Reflexión
+Aplicaría este conocimiento en un proyecto real para automatizar el despliegue de aplicaciones mediante contenedores y Kubernetes, garantizando **escalabilidad**, **alta disponibilidad** y **facilidad de mantenimiento** en entornos productivos.
